@@ -16,7 +16,7 @@ class AddressEntryTest {
    * getFirstName} work as expected
    */
   @Test
-  void testFirstName() {
+  public void testFirstName() {
     AddressEntry entry = new AddressEntry();
     entry.setFirstName("John");
 
@@ -28,7 +28,7 @@ class AddressEntryTest {
    * getLastName} work as expected
    */
   @Test
-  void testLastName() {
+  public void testLastName() {
     AddressEntry entry = new AddressEntry();
     entry.setLastName("Doe");
 
@@ -40,7 +40,7 @@ class AddressEntryTest {
    * work as expected
    */
   @Test
-  void testStreet() {
+  public void testStreet() {
     AddressEntry entry = new AddressEntry();
     entry.setStreet("1234 Main Street");
 
@@ -52,7 +52,7 @@ class AddressEntryTest {
    * expected
    */
   @Test
-  void testCity() {
+  public void testCity() {
     AddressEntry entry = new AddressEntry();
     entry.setCity("Maintown");
 
@@ -64,7 +64,7 @@ class AddressEntryTest {
    * expected
    */
   @Test
-  void testZip() {
+  public void testZip() {
     AddressEntry entry = new AddressEntry();
     entry.setZip(12345);
 
@@ -76,7 +76,7 @@ class AddressEntryTest {
    * work as expected
    */
   @Test
-  void testPhone() {
+  public void testPhone() {
     AddressEntry entry = new AddressEntry();
     entry.setPhone("1234567890");
 
@@ -88,11 +88,11 @@ class AddressEntryTest {
    * work as expected
    */
   @Test
-  void testEmail() {
+  public void testEmail() {
     AddressEntry entry = new AddressEntry();
-    entry.setEmail("john@example.com");
+    entry.setEmail("johndoe@example.com");
 
-    assertEquals("john@example.com", entry.getEmail());
+    assertEquals("johndoe@example.com", entry.getEmail());
   }
 
   /**
@@ -100,14 +100,26 @@ class AddressEntryTest {
    * String, String) qualified constructor} works as expected
    */
   @Test
-  void testConstructor() {
+  public void testConstructor() {
     AddressEntry entry =
         new AddressEntry(
-            "John", "Doe", "1234 Main Street", "Maintown", 12345, "1234567890", "john@example.com");
+            "John",
+            "Doe",
+            "1234 Main Street",
+            "Maintown",
+            12345,
+            "1234567890",
+            "johndoe@example.com");
 
     AddressEntry entry2 =
         new AddressEntry(
-            "Jane", "Doe", "5678 Main Street", "Maintown", 12345, "0987654321", "jane@example.com");
+            "Jane",
+            "Doe",
+            "5678 Main Street",
+            "Maintown",
+            12345,
+            "0987654321",
+            "janedoe@example.com");
 
     assertEquals("John", entry.getFirstName());
     assertEquals("Doe", entry.getLastName());
@@ -115,7 +127,7 @@ class AddressEntryTest {
     assertEquals("Maintown", entry.getCity());
     assertEquals(12345, entry.getZip());
     assertEquals("1234567890", entry.getPhone());
-    assertEquals("john@example.com", entry.getEmail());
+    assertEquals("johndoe@example.com", entry.getEmail());
 
     assertEquals("Jane", entry2.getFirstName());
     assertEquals("Doe", entry2.getLastName());
@@ -123,14 +135,14 @@ class AddressEntryTest {
     assertEquals("Maintown", entry2.getCity());
     assertEquals(12345, entry2.getZip());
     assertEquals("0987654321", entry2.getPhone());
-    assertEquals("jane@example.com", entry2.getEmail());
+    assertEquals("janedoe@example.com", entry2.getEmail());
   }
 
   /**
    * Tests that {@link AddressEntry#toString toString} contains all the address entry's information
    */
   @Test
-  void testToString() {
+  public void testToString() {
     String entryString =
         new AddressEntry(
                 "John",
@@ -139,7 +151,7 @@ class AddressEntryTest {
                 "Maintown",
                 12345,
                 "1234567890",
-                "john@example.com")
+                "johndoe@example.com")
             .toString();
 
     String entry2String =
@@ -150,7 +162,7 @@ class AddressEntryTest {
                 "Maintown",
                 12345,
                 "0987654321",
-                "jane@example.com")
+                "janedoe@example.com")
             .toString();
 
     assertTrue(entryString.contains("John Doe")); // first and last name should be on one line
@@ -158,13 +170,175 @@ class AddressEntryTest {
     assertTrue(entryString.contains("Maintown"));
     assertTrue(entryString.contains("12345"));
     assertTrue(entryString.contains("1234567890"));
-    assertTrue(entryString.contains("john@example.com"));
+    assertTrue(entryString.contains("johndoe@example.com"));
 
     assertTrue(entry2String.contains("Jane Doe")); // first and last name should be on one line
     assertTrue(entry2String.contains("5678 Main Street"));
     assertTrue(entry2String.contains("Maintown"));
     assertTrue(entry2String.contains("12345"));
     assertTrue(entry2String.contains("0987654321"));
-    assertTrue(entry2String.contains("jane@example.com"));
+    assertTrue(entry2String.contains("janedoe@example.com"));
+  }
+
+  /** Tests the hash codes of address entries */
+  @Test
+  public void testHashCode() {
+    AddressEntry entry =
+        new AddressEntry(
+            "John",
+            "Doe",
+            "1234 Main Street",
+            "Maintown",
+            12345,
+            "1234567890",
+            "johndoe@example.com");
+
+    assertEquals("johndoe".hashCode(), entry.hashCode());
+  }
+
+  /** Tests that hash code calculation uses case-normalised names */
+  @Test
+  public void testHashCodeCaseInsensitive() {
+    AddressEntry johnDoe =
+        new AddressEntry(
+            "John",
+            "Doe",
+            "1234 Main Street",
+            "Maintown",
+            12345,
+            "1234567890",
+            "johndoe@example.com");
+
+    AddressEntry johnDoe2 =
+        new AddressEntry(
+            "jOhN",
+            "dOE",
+            "1234 Main Street",
+            "Maintown",
+            12345,
+            "1234567890",
+            "johndoe@example.com");
+
+    assertEquals(johnDoe.hashCode(), johnDoe2.hashCode());
+  }
+
+  /** Tests that two address entries are equal */
+  @Test
+  public void testEquals() {
+    AddressEntry johnDoe =
+        new AddressEntry(
+            "John",
+            "Doe",
+            "1234 Main Street",
+            "Maintown",
+            12345,
+            "1234567890",
+            "johndoe@example.com");
+
+    AddressEntry johnDoe2 =
+        new AddressEntry(
+            "jOhN",
+            "dOE",
+            "1234 Main Street",
+            "Maintown",
+            12345,
+            "1234567890",
+            "johndoe@example.com");
+
+    assertTrue(johnDoe.equals(johnDoe2));
+  }
+
+  /** Tests that comparing an address entry to null will not be true */
+  @Test
+  public void testEqualsNull() {
+    AddressEntry johnDoe =
+        new AddressEntry(
+            "John",
+            "Doe",
+            "1234 Main Street",
+            "Maintown",
+            12345,
+            "1234567890",
+            "johndoe@example.com");
+
+    assertFalse(johnDoe.equals(null));
+  }
+
+  /** Tests the comparison of 2 address entries that should be equal (0) */
+  @Test
+  public void testCompareEquals() {
+    AddressEntry johnDoe =
+        new AddressEntry(
+            "John",
+            "Doe",
+            "1234 Main Street",
+            "Maintown",
+            12345,
+            "1234567890",
+            "johndoe@example.com");
+
+    AddressEntry johnDoe2 =
+        new AddressEntry(
+            "jOhN",
+            "dOE",
+            "1234 Main Street",
+            "Maintown",
+            12345,
+            "1234567890",
+            "johndoe2@example.com");
+
+    assertEquals(0, johnDoe.compareTo(johnDoe2));
+  }
+
+  /** Tests the comparison of 2 address entries where entry1 comes before entry2 (<0) */
+  @Test
+  public void testCompareLessThan() {
+    AddressEntry johnDoe =
+        new AddressEntry(
+            "John",
+            "Doe",
+            "1234 Main Street",
+            "Maintown",
+            12345,
+            "1234567890",
+            "johndoe@example.com");
+
+    AddressEntry janeSmith =
+        new AddressEntry(
+            "Jane",
+            "Smith",
+            "9012 Main Street",
+            "Maintown",
+            12345,
+            "2468013579",
+            "janesmith@example.com");
+
+    assertTrue(johnDoe.compareTo(janeSmith) < 0);
+  }
+
+  /** Tests the comparison of 2 address entries where entry2 comes before entry1 (>0) */
+  @Test
+  public void testCompareGreaterThan() {
+    AddressEntry johnDoe =
+        new AddressEntry(
+            "John",
+            "Doe",
+            "1234 Main Street",
+            "Maintown",
+            12345,
+            "1234567890",
+            "johndoe@example.com");
+
+    AddressEntry janeSmith =
+        new AddressEntry(
+            "Jane",
+            "Smith",
+            "9012 Main Street",
+            "Maintown",
+            12345,
+            "2468013579",
+            "janesmith@example.com");
+
+    assertTrue(janeSmith.compareTo(johnDoe) > 0);
   }
 }

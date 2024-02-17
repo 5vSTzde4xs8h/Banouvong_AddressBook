@@ -1,19 +1,31 @@
 package address.data;
 
 /**
- * Holds address and contact information for use in an address book
+ * Holds address and contact information on a person
  *
  * @author Poleon Banouvong
  * @since 2024-01-25
- * @version 1.0
  */
-public class AddressEntry {
+public class AddressEntry implements Comparable<AddressEntry> {
+  /** The first name of the person */
   private String firstName;
+
+  /** The last name of the person */
   private String lastName;
+
+  /** The street the person lives on */
   private String street;
+
+  /** The city the person lives in */
   private String city;
-  private Integer zip;
+
+  /** The ZIP code where the person lives */
+  private int zip;
+
+  /** The phone number of the person */
   private String phone;
+
+  /** The e-mail address of the person */
   private String email;
 
   /** Constructs an address book entry with no prior information */
@@ -53,6 +65,62 @@ public class AddressEntry {
     this.zip = zip;
     this.phone = phone;
     this.email = email;
+  }
+
+  /**
+   * Calculates a hash code for the address entry. Entries with the same case-normalised first and
+   * last names will have the same hash code.
+   *
+   * @return The hash code
+   */
+  @Override
+  public int hashCode() {
+    String firstNameLower = firstName.toLowerCase();
+    String lastNameLower = lastName.toLowerCase();
+
+    return (firstNameLower + lastNameLower).hashCode();
+  }
+
+  /**
+   * Checks if two objects are equal to each other.
+   *
+   * @param that The object to compare to
+   * @return {@code false} if the object to compare to is {@code null} or their hash codes aren't
+   *     equal, {@code true} otherwise
+   */
+  @Override
+  public boolean equals(Object that) {
+    if (that != null) {
+      return hashCode() == that.hashCode();
+    } else {
+      return false;
+    }
+  }
+
+  /**
+   * Compares this {@link AddressEntry} to another. If the two entries have different
+   * case-normalised last names, then the comparison of their case-normalised first names will be
+   * returned. Otherwise, the comparison returns 0.
+   *
+   * @param that The {@link AddressEntry} to be compared
+   * @return A negative integer, zero, or a positive integer if this object is less than, equal to,
+   *     or greater than the compared object.
+   */
+  @Override
+  public int compareTo(AddressEntry that) {
+    String thisLastNameLower = lastName.toLowerCase();
+    String thatLastNameLower = that.lastName.toLowerCase();
+
+    int lastNameComparison = thisLastNameLower.compareTo(thatLastNameLower);
+
+    if (lastNameComparison == 0) {
+      String thisFirstNameLower = firstName.toLowerCase();
+      String thatFirstNameLower = that.firstName.toLowerCase();
+
+      return thisFirstNameLower.compareTo(thatFirstNameLower);
+    } else {
+      return lastNameComparison;
+    }
   }
 
   /**
@@ -102,7 +170,7 @@ public class AddressEntry {
   /**
    * @return The ZIP code where the person lives
    */
-  public Integer getZip() {
+  public int getZip() {
     return zip;
   }
 
@@ -161,7 +229,7 @@ public class AddressEntry {
    *
    * @param zip The ZIP code where the person lives
    */
-  public void setZip(Integer zip) {
+  public void setZip(int zip) {
     this.zip = zip;
   }
 
