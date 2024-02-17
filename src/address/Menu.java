@@ -1,14 +1,22 @@
 package address;
 
 /**
+ * TODO: Implement Menu
  * Menu has a number of static prompt methods that will ask the user for details about a new person
  * for use in an address book.
  *
  * @author Poleon Banouvong
  * @since 2024-01-25
- * @version 1.0
  */
 public class Menu {
+  /** Empty constructor explicitly private-protected to prevent creation of Menu instances */
+  private Menu() {}
+
+  /** Outputs a menu for interacting with the address book */
+  public static void displayMenu() {
+    System.out.println("Not implemented");
+  }
+
   /**
    * Prompts the user for a first name
    *
