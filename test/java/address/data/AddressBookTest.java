@@ -153,10 +153,8 @@ class AddressBookTest {
     addressBook.add(johnDoe);
     addressBook.add(janeDoe);
 
-    ArrayList<AddressEntry> foundEntriesFullLastName =
-        addressBook.findEntriesWithLastNameStartingWith("Doe");
-    ArrayList<AddressEntry> foundEntriesPartialLastName =
-        addressBook.findEntriesWithLastNameStartingWith("D");
+    ArrayList<AddressEntry> foundEntriesFullLastName = addressBook.find("Doe");
+    ArrayList<AddressEntry> foundEntriesPartialLastName = addressBook.find("D");
 
     assertEquals(2, foundEntriesFullLastName.size());
     assertEquals(2, foundEntriesPartialLastName.size());
@@ -169,10 +167,10 @@ class AddressBookTest {
     addressBook.add(johnDoe);
     addressBook.add(janeDoe);
 
-    ArrayList<AddressEntry> foundEntries = addressBook.findEntriesWithLastNameStartingWith("DOE");
-    ArrayList<AddressEntry> foundEntries2 = addressBook.findEntriesWithLastNameStartingWith("DoE");
-    ArrayList<AddressEntry> foundEntries3 = addressBook.findEntriesWithLastNameStartingWith("dOe");
-    ArrayList<AddressEntry> foundEntries4 = addressBook.findEntriesWithLastNameStartingWith("dOE");
+    ArrayList<AddressEntry> foundEntries = addressBook.find("DOE");
+    ArrayList<AddressEntry> foundEntries2 = addressBook.find("DoE");
+    ArrayList<AddressEntry> foundEntries3 = addressBook.find("dOe");
+    ArrayList<AddressEntry> foundEntries4 = addressBook.find("dOE");
 
     assertEquals(2, foundEntries.size());
     assertEquals(2, foundEntries2.size());
@@ -187,7 +185,7 @@ class AddressBookTest {
     addressBook.add(johnDoe);
     addressBook.add(janeDoe);
 
-    String addressListing = addressBook.getListing();
+    String addressListing = addressBook.list();
     assertTrue(addressListing.contains(johnDoe.toString()));
     assertTrue(addressListing.contains(janeDoe.toString()));
   }
@@ -196,6 +194,6 @@ class AddressBookTest {
   @Test
   public void testListingEmpty() {
     AddressBook addressBook = new AddressBook();
-    assertEquals("", addressBook.getListing());
+    assertEquals("", addressBook.list());
   }
 }

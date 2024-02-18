@@ -38,7 +38,7 @@ public class AddressBook {
   }
 
   /** Prints out all address book entries */
-  public String getListing() {
+  public String list() {
     int addressNum = 1;
     String listing = "";
 
@@ -57,7 +57,7 @@ public class AddressBook {
    * @param fileName The file to read address entries from
    * @return An {@link ArrayList} containing the added entries
    */
-  public ArrayList<AddressEntry> addEntriesFromFile(String fileName) {
+  public ArrayList<AddressEntry> readFromFile(String fileName) {
     ArrayList<AddressEntry> addressEntries = new ArrayList<AddressEntry>();
     return addressEntries;
   }
@@ -66,10 +66,10 @@ public class AddressBook {
    * TODO: Implement findEntriesWithLastNameStartingWith
    * Returns a list of address entries whose last name starts with a prefix
    *
-   * @param prefix The prefix to match last names against
+   * @param startOfLastName The prefix to match last names against
    * @return An {@link ArrayList} containing the matching entries
    */
-  public ArrayList<AddressEntry> findEntriesWithLastNameStartingWith(String prefix) {
+  public ArrayList<AddressEntry> find(String startOfLastName) {
     ArrayList<AddressEntry> addressEntries = new ArrayList<AddressEntry>();
     return addressEntries;
   }
