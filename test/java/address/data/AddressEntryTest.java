@@ -103,10 +103,7 @@ class AddressEntryTest {
     assertEquals("johndoe@example.com", entry.getEmail());
   }
 
-  /**
-   * Tests that the {@link AddressEntry#AddressEntry(String, String, String, String, String,
-   * Integer, String, String) qualified constructor} works as expected
-   */
+  /** Tests that the {@link AddressEntry} constructors work as expected */
   @Test
   public void testConstructor() {
     AddressEntry entry =
@@ -131,6 +128,8 @@ class AddressEntryTest {
             "0987654321",
             "janedoe@example.com");
 
+    AddressEntry entry3 = new AddressEntry();
+
     assertEquals("John", entry.getFirstName());
     assertEquals("Doe", entry.getLastName());
     assertEquals("1234 Main Street", entry.getStreet());
@@ -148,6 +147,15 @@ class AddressEntryTest {
     assertEquals(12345, entry2.getZip());
     assertEquals("0987654321", entry2.getPhone());
     assertEquals("janedoe@example.com", entry2.getEmail());
+
+    assertEquals("", entry3.getFirstName());
+    assertEquals("", entry3.getLastName());
+    assertEquals("", entry3.getStreet());
+    assertEquals("", entry3.getCity());
+    assertEquals("", entry3.getState());
+    assertEquals(0, entry3.getZip());
+    assertEquals("", entry3.getPhone());
+    assertEquals("", entry3.getEmail());
   }
 
   /**

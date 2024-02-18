@@ -37,6 +37,7 @@ public class AddressEntry implements Comparable<AddressEntry> {
     this.lastName = "";
     this.street = "";
     this.city = "";
+    this.state = "";
     this.zip = 0;
     this.phone = "";
     this.email = "";
@@ -105,8 +106,8 @@ public class AddressEntry implements Comparable<AddressEntry> {
 
   /**
    * Compares this {@link AddressEntry} to another. If the two entries have different
-   * case-normalised last names, then the comparison of their case-normalised first names will be
-   * returned. Otherwise, the comparison returns 0.
+   * case-normalised last names, then that comparison will be returned. Otherwise, the function
+   * returns the comparison of their case-normalised first names.
    *
    * @param that The {@link AddressEntry} to be compared
    * @return A negative integer, zero, or a positive integer if this object is less than, equal to,
