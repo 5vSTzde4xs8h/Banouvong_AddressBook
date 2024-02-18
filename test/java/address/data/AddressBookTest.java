@@ -19,6 +19,7 @@ class AddressBookTest {
           "Doe",
           "1234 Main Street",
           "Maintown",
+          "Mainstate",
           12345,
           "1234567890",
           "johndoe@example.com");
@@ -30,6 +31,7 @@ class AddressBookTest {
           "Doe",
           "5678 Main Street",
           "Maintown",
+          "Mainstate",
           12345,
           "0987654321",
           "janedoe@example.com");
@@ -41,6 +43,7 @@ class AddressBookTest {
           "Smith",
           "9012 Main Street",
           "Maintown",
+          "Mainstate",
           12345,
           "2468013579",
           "johnsmith@example.com");
@@ -52,6 +55,7 @@ class AddressBookTest {
           "Doe",
           "3456 Main Street",
           "Maintown",
+          "Mainstate",
           12345,
           "1357924680",
           "johndoe2@example.com");

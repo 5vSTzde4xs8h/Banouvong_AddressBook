@@ -19,6 +19,9 @@ public class AddressEntry implements Comparable<AddressEntry> {
   /** The city the person lives in */
   private String city;
 
+  /** The state the person lives in */
+  private String state;
+
   /** The ZIP code where the person lives */
   private int zip;
 
@@ -46,6 +49,7 @@ public class AddressEntry implements Comparable<AddressEntry> {
    * @param lastName The last name of the person
    * @param street The street the person lives on
    * @param city The city the person lives in
+   * @param state The state the person lives in
    * @param zip The ZIP code where the person lives
    * @param phone The telephone number of the person
    * @param email The email address of the person
@@ -55,6 +59,7 @@ public class AddressEntry implements Comparable<AddressEntry> {
       String lastName,
       String street,
       String city,
+      String state,
       Integer zip,
       String phone,
       String email) {
@@ -62,6 +67,7 @@ public class AddressEntry implements Comparable<AddressEntry> {
     this.lastName = lastName;
     this.street = street;
     this.city = city;
+    this.state = state;
     this.zip = zip;
     this.phone = phone;
     this.email = email;
@@ -132,11 +138,12 @@ public class AddressEntry implements Comparable<AddressEntry> {
     /* Format is:
     FirstName LastName
     Street
-    City, ZIP
+    City, State ZIP
     Email
     Phone */
     return String.format(
-        "%s %s\n%s\n%s, %d\n%s\n%s", firstName, lastName, street, city, zip, email, phone);
+        "%s %s\n%s\n%s %s, %d\n%s\n%s",
+        firstName, lastName, street, city, state, zip, email, phone);
   }
 
   /**
@@ -165,6 +172,13 @@ public class AddressEntry implements Comparable<AddressEntry> {
    */
   public String getCity() {
     return city;
+  }
+
+  /**
+   * @return The state the person lives in
+   */
+  public String getState() {
+    return state;
   }
 
   /**
@@ -222,6 +236,15 @@ public class AddressEntry implements Comparable<AddressEntry> {
    */
   public void setCity(String city) {
     this.city = city;
+  }
+
+  /**
+   * Sets the state of the address entry
+   *
+   * @param state The state the person lives in
+   */
+  public void setState(String state) {
+    this.state = state;
   }
 
   /**
