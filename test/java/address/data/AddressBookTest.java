@@ -48,7 +48,7 @@ class AddressBookTest {
           "2468013579",
           "johnsmith@example.com");
 
-  /** Address entry for a second but distinct John Doe */
+  /** Address entry for a second John Doe */
   AddressEntry johnDoe2 =
       new AddressEntry(
           "John",
@@ -59,6 +59,18 @@ class AddressBookTest {
           12345,
           "1357924680",
           "johndoe2@example.com");
+
+  /** Address entry for Aaron Baron */
+  AddressEntry aaronBaron =
+      new AddressEntry(
+          "Aaron",
+          "Baron",
+          "1029 Side Street",
+          "Sidetown",
+          "Mainstate",
+          12356,
+          "1029384756",
+          "abaron@example.com");
 
   /** Tests that an {@link AddressEntry} can be added to the address book */
   @Test
@@ -109,22 +121,82 @@ class AddressBookTest {
   /** Tests that address entries can be read from a file */
   @Test
   public void testReadFile() {
-    fail("Not implemented");
+    String testFileName = "test/resources/addressBook.txt";
+    AddressBook addressBook = new AddressBook();
+
+    ArrayList<AddressEntry> addedEntries = addressBook.readFromFile(testFileName);
+    String addressBookListing = addressBook.list();
+
+    assertEquals(3, addedEntries.size());
+    assertTrue(addressBookListing.contains("John Doe"));
+    assertTrue(addressBookListing.contains("Jane Doe"));
+    assertTrue(addressBookListing.contains("John Smith"));
   }
 
   /**
-   * Tests that reading entries from a malformed file will add as many entries as possible up to the
-   * first malformed entry
+   * Tests that reading entries from a malformed file (meaning a file that has an invalid field or
+   * missing fields) will add all the entries before the malformed one
    */
   @Test
   public void testReadMalformedFile() {
-    fail("Not implemented");
+    String testFile1Name = "test/resources/addressBookMalformed.txt";
+    String testFile2Name = "test/resources/addressBookIncomplete.txt";
+    AddressBook addressBook = new AddressBook();
+
+    ArrayList<AddressEntry> addedEntries = addressBook.readFromFile(testFile1Name);
+    ArrayList<AddressEntry> addedEntries2 = addressBook.readFromFile(testFile2Name);
+    String addressBookListing = addressBook.list();
+
+    assertEquals(1, addedEntries.size());
+    assertEquals(0, addedEntries2.size());
+    assertTrue(addressBookListing.contains("John Doe"));
+    assertFalse(addressBookListing.contains("Jane Doe"));
+    assertFalse(addressBookListing.contains("John Smith"));
   }
 
-  /** Tests that reading from an empty file adds no entries */
+  /**
+   * Tests that reading from an empty (meaning actually empty or containing only whitespace) file
+   * adds no entries
+   */
   @Test
   public void testReadEmptyFile() {
-    fail("Not implemented");
+    String fileName = "test/resources/addressBookEmpty.txt";
+    AddressBook addressBook = new AddressBook();
+    ArrayList<AddressEntry> addedEntries = addressBook.readFromFile(fileName);
+
+    assertEquals(0, addedEntries.size());
+  }
+
+  /** Tests that passing an empty filename returns an empty list */
+  @Test
+  public void testReadEmptyFileName() {
+    AddressBook addressBook = new AddressBook();
+    ArrayList<AddressEntry> addedEntries = addressBook.readFromFile("");
+
+    assertEquals(0, addedEntries.size());
+  }
+
+  /** Tests that reading a non-existent file returns an empty list */
+  @Test
+  public void testReadMissingFile() {
+    String fileName = "test/resources/addressBookNonExistent.txt";
+    AddressBook addressBook = new AddressBook();
+    ArrayList<AddressEntry> addedEntries = addressBook.readFromFile(fileName);
+
+    assertEquals(0, addedEntries.size());
+  }
+
+  /** Tests that reading duplicate entries doesn't add new ones */
+  @Test
+  public void testReadDuplicateFile() {
+    String fileName = "test/resources/addressBook.txt";
+    AddressBook addressBook = new AddressBook();
+
+    ArrayList<AddressEntry> addedEntries = addressBook.readFromFile(fileName);
+    ArrayList<AddressEntry> duplicateAddedEntries = addressBook.readFromFile(fileName);
+
+    assertEquals(3, addedEntries.size());
+    assertEquals(0, duplicateAddedEntries.size());
   }
 
   /** Tests that an {@link AddressEntry} can be removed from an address book */
@@ -146,18 +218,25 @@ class AddressBookTest {
     assertFalse(addressBook.remove(johnDoe));
   }
 
-  /** Tests that finding {@link AddressEntry}s by last name works */
+  /** Tests that finding {@link AddressEntry}s by last name works as intended */
   @Test
   public void testFind() {
     AddressBook addressBook = new AddressBook();
     addressBook.add(johnDoe);
     addressBook.add(janeDoe);
+    addressBook.add(aaronBaron);
 
     ArrayList<AddressEntry> foundEntriesFullLastName = addressBook.find("Doe");
     ArrayList<AddressEntry> foundEntriesPartialLastName = addressBook.find("D");
+    ArrayList<AddressEntry> foundEntriesNonsenseLastName =
+        addressBook.find("o"); // none of the last names start with O
+    ArrayList<AddressEntry> foundEntriesEmptyLastName =
+        addressBook.find(""); // empty string should return empty list
 
     assertEquals(2, foundEntriesFullLastName.size());
     assertEquals(2, foundEntriesPartialLastName.size());
+    assertEquals(0, foundEntriesNonsenseLastName.size());
+    assertEquals(0, foundEntriesEmptyLastName.size());
   }
 
   /** Tests that finding {@link AddressEntry}s is case-insensitive */
@@ -178,7 +257,7 @@ class AddressBookTest {
     assertEquals(2, foundEntries4.size());
   }
 
-  /** Tests that address listing works */
+  /** Tests that address listing works and contains the address entry information */
   @Test
   public void testListing() {
     AddressBook addressBook = new AddressBook();
@@ -194,6 +273,6 @@ class AddressBookTest {
   @Test
   public void testListingEmpty() {
     AddressBook addressBook = new AddressBook();
-    assertEquals("", addressBook.list());
+    assertTrue(addressBook.list().isEmpty());
   }
 }

@@ -1,0 +1,15 @@
+John
+Doe
+1234 Main Street
+Maintown
+Mainstate
+12345
+1234567890
+johndoe@example.com
+
+Jane
+Doe
+5678 Main Street
+Maintown
+Mainstate
+NotAZipCode
