@@ -140,11 +140,11 @@ public class AddressEntry implements Comparable<AddressEntry> {
     FirstName LastName
     Street
     City, State ZIP
-    Email
-    Phone */
+    Phone
+    Email */
     return String.format(
         "%s %s\n%s\n%s %s, %d\n%s\n%s",
-        firstName, lastName, street, city, state, zip, email, phone);
+        firstName, lastName, street, city, state, zip, phone, email);
   }
 
   /**
