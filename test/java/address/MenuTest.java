@@ -57,6 +57,38 @@ class MenuTest {
     assertTrue(outputStream.toString().contains("Invalid input"));
   }
 
+  /** Tests that {@link Menu#promptInteger} works as intended */
+  @Test
+  public void testPromptInteger() {
+    simulateInput("12345" + System.lineSeparator()); // 12345↵
+    int input = Menu.promptInteger("Input");
+
+    assertEquals(12345, input);
+    assertTrue(outputStream.toString().contains("Input: "));
+  }
+
+  /** Tests that {@link Menu#promptInteger} re-prompts for empty lines */
+  @Test
+  public void testPromptIntegerEmpty() {
+    simulateInput(System.lineSeparator() + "12345" + System.lineSeparator()); // ↵12345↵
+    int input = Menu.promptInteger("Input");
+
+    assertEquals(12345, input);
+    assertTrue(outputStream.toString().contains("Input: "));
+    assertTrue(outputStream.toString().contains("Invalid input"));
+  }
+
+  /** Tests that {@link Menu#promptInteger} re-prompts for non-numeric lines */
+  @Test
+  public void testPromptIntegerNonNumeric() {
+    simulateInput("abcde" + System.lineSeparator() + "12345" + System.lineSeparator()); // abcde↵12345↵
+    int input = Menu.promptInteger("Input");
+
+    assertEquals(12345, input);
+    assertTrue(outputStream.toString().contains("Input: "));
+    assertTrue(outputStream.toString().contains("Invalid input"));
+  }
+
   /** Tests that {@link Menu#prompt_FirstName} works as intended */
   @Test
   public void testPromptFirstName() {

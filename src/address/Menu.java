@@ -17,15 +17,15 @@ public class Menu {
   public static void displayMenu() {
     System.out.print(
         """
-        ########
+        ################
         Address Book Menu
-        1: Load address entries from file
-        2: Add an address entry
-        3: Remove an address entry
-        4: Find address entries
-        5: Address book listing
-        6: Quit
-        ########
+        a) Load address entries from file
+        b) Add an address entry
+        c) Remove an address entry
+        d) Find address entries
+        e) Address book listing
+        f) Quit
+        ################
         """);
   }
 
@@ -37,19 +37,41 @@ public class Menu {
    * @return The text input by the user
    */
   public static String promptInput(String promptText) {
-    boolean alreadyPrompted = false;
     Scanner scanner = new Scanner(System.in);
     String input = null;
 
-    while ((input == null) || (input.isEmpty())) {
-      if (alreadyPrompted) {
-        System.out.println("Invalid input, please try again!");
-      }
+    while (input == null) {
+      System.out.print(promptText + ": ");
+      input = scanner.nextLine().trim();
 
+      if (input.isEmpty()) {
+        System.out.println("Invalid input, please try again!");
+        input = null;
+      }
+    }
+
+    return input;
+  }
+
+  /**
+   * Generic method for prompting and capturing an integer. This method will re-prompt the user if
+   * they input a line containing only whitespace.
+   *
+   * @param promptText The text to present to the user
+   * @return The integer input by the user
+   */
+  public static int promptInteger(String promptText) {
+    Scanner scanner = new Scanner(System.in);
+    Integer input = null;
+
+    while (input == null) {
       System.out.print(promptText + ": ");
 
-      input = scanner.nextLine().trim();
-      alreadyPrompted = true;
+      try {
+        input = Integer.parseInt(scanner.nextLine());
+      } catch (NumberFormatException ignored) {
+        System.out.println("Invalid input, please try again!");
+      }
     }
 
     return input;
@@ -106,20 +128,7 @@ public class Menu {
    * @return The ZIP code entered by the user
    */
   public static int prompt_Zip() {
-    Scanner scanner = new Scanner(System.in);
-    Integer input = null;
-
-    while (input == null) {
-      System.out.print("ZIP code: ");
-
-      try {
-        input = Integer.parseInt(scanner.nextLine());
-      } catch (NumberFormatException ignored) {
-        System.out.println("Invalid input, please try again!");
-      }
-    }
-
-    return input;
+    return promptInteger("ZIP code");
   }
 
   /**
