@@ -41,12 +41,17 @@ public class AddressBook {
 
   /** Prints out all address book entries */
   public String list() {
-    int addressNum = 1;
+    int addressNumber = 1;
     String listing = "";
 
     for (AddressEntry addressEntry : addressEntryList) {
-      listing += (addressNum + ": " + addressEntry.toString() + '\n');
-      addressNum++;
+      listing +=
+          (addressNumber
+              + ": "
+              + addressEntry.toString()
+              + ((addressEntry != addressEntryList.getLast()) ? "\n\n" : ""));
+
+      addressNumber++;
     }
 
     return listing;
