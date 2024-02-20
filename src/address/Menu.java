@@ -1,5 +1,6 @@
 package address;
 
+import address.data.AddressBook;
 import java.util.Scanner;
 
 /**
@@ -148,4 +149,32 @@ public class Menu {
   public static String prompt_Email() {
     return promptInput("Email");
   }
+
+  /**
+   * Prompt the user to add address entries from a file
+   *
+   * @param addressBook The address book to add entries to
+   */
+  public static void promptAddEntriesFromFile(AddressBook addressBook) {}
+
+  /**
+   * Prompt the user to manually add an entry
+   *
+   * @param addressBook The address book to add the entry to
+   */
+  public static void promptAddEntry(AddressBook addressBook) {}
+
+  /**
+   * Prompts the user to remove an entry
+   *
+   * @param addressBook The address book to remove the entry from
+   */
+  public static void promptRemoveEntry(AddressBook addressBook) {}
+
+  /**
+   * Prompts the user to find entries
+   *
+   * @param addressBook The address book to find entries in
+   */
+  public static void promptFindEntries(AddressBook addressBook) {}
 }
