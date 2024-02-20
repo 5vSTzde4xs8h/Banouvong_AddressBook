@@ -124,13 +124,26 @@ class AddressBookTest {
     String testFileName = "test/resources/addressBook.txt";
     AddressBook addressBook = new AddressBook();
 
+    AddressEntry janeSmith =
+        new AddressEntry(
+            "Jane",
+            "Smith",
+            "1025 Inner Ring",
+            "Strasas",
+            "Melona",
+            76102,
+            "5849301812",
+            "janesmith@example.com");
+
     ArrayList<AddressEntry> addedEntries = addressBook.readFromFile(testFileName);
     String addressBookListing = addressBook.list();
 
-    assertEquals(3, addedEntries.size());
-    assertTrue(addressBookListing.contains("John Doe"));
-    assertTrue(addressBookListing.contains("Jane Doe"));
-    assertTrue(addressBookListing.contains("John Smith"));
+    assertEquals(5, addedEntries.size());
+    assertEquals(johnDoe, addedEntries.get(0));
+    assertEquals(janeDoe, addedEntries.get(1));
+    assertEquals(johnSmith, addedEntries.get(2));
+    assertEquals(janeSmith, addedEntries.get(3));
+    assertEquals(aaronBaron, addedEntries.get(4));
   }
 
   /**
@@ -195,7 +208,7 @@ class AddressBookTest {
     ArrayList<AddressEntry> addedEntries = addressBook.readFromFile(fileName);
     ArrayList<AddressEntry> duplicateAddedEntries = addressBook.readFromFile(fileName);
 
-    assertEquals(3, addedEntries.size());
+    assertEquals(5, addedEntries.size());
     assertEquals(0, duplicateAddedEntries.size());
   }
 
@@ -274,5 +287,15 @@ class AddressBookTest {
   public void testListingEmpty() {
     AddressBook addressBook = new AddressBook();
     assertTrue(addressBook.list().isEmpty());
+  }
+
+  /** Tests that {@link AddressBook#contains} works as intended */
+  @Test
+  public void testContains() {
+    AddressBook addressBook = new AddressBook();
+    addressBook.add(johnDoe);
+
+    assertTrue(addressBook.contains(johnDoe));
+    assertFalse(addressBook.contains(janeDoe));
   }
 }

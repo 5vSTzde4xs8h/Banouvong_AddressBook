@@ -39,6 +39,16 @@ public class AddressBook {
     return addressEntryList.remove(addressEntry);
   }
 
+  /**
+   * Returns if an address entry is in the address book
+   *
+   * @param addressEntry The address entry to check
+   * @return {@code true} if the address entry is in the address book
+   */
+  public boolean contains(AddressEntry addressEntry) {
+    return addressEntryList.contains(addressEntry);
+  }
+
   /** Prints out all address book entries */
   public String list() {
     int addressNumber = 1;
