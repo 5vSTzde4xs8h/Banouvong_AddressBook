@@ -136,8 +136,6 @@ class AddressBookTest {
             "janesmith@example.com");
 
     ArrayList<AddressEntry> addedEntries = addressBook.readFromFile(testFileName);
-    String addressBookListing = addressBook.list();
-
     assertEquals(5, addedEntries.size());
     assertEquals(johnDoe, addedEntries.get(0));
     assertEquals(janeDoe, addedEntries.get(1));
