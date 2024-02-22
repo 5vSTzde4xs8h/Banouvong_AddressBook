@@ -1,0 +1,9 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Address Book App" type="Application" factoryName="Application">
+    <option name="MAIN_CLASS_NAME" value="address.AddressBookApplication" />
+    <module name="AddressBookApplication" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
