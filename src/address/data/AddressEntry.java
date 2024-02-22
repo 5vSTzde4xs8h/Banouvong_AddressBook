@@ -148,6 +148,8 @@ public class AddressEntry implements Comparable<AddressEntry> {
   }
 
   /**
+   * Returns the first name of the address entry
+   * 
    * @return The first name of the person
    */
   public String getFirstName() {
@@ -155,6 +157,8 @@ public class AddressEntry implements Comparable<AddressEntry> {
   }
 
   /**
+   * Returns the last name of the address entry
+   * 
    * @return The last name of the person
    */
   public String getLastName() {
@@ -162,6 +166,8 @@ public class AddressEntry implements Comparable<AddressEntry> {
   }
 
   /**
+   * Returns the street of the address entry
+   * 
    * @return The street the person lives on
    */
   public String getStreet() {
@@ -169,6 +175,8 @@ public class AddressEntry implements Comparable<AddressEntry> {
   }
 
   /**
+   * Returns the city of the address entry
+   * 
    * @return The city the person lives in
    */
   public String getCity() {
@@ -176,6 +184,8 @@ public class AddressEntry implements Comparable<AddressEntry> {
   }
 
   /**
+   * Returns the state of the address entry
+   * 
    * @return The state the person lives in
    */
   public String getState() {
@@ -183,6 +193,8 @@ public class AddressEntry implements Comparable<AddressEntry> {
   }
 
   /**
+   * Returns the ZIP code of the address entry
+   * 
    * @return The ZIP code where the person lives
    */
   public int getZip() {
@@ -190,6 +202,8 @@ public class AddressEntry implements Comparable<AddressEntry> {
   }
 
   /**
+   * Returns the phone number of the address entry
+   * 
    * @return The phone number of the person
    */
   public String getPhone() {
@@ -197,6 +211,8 @@ public class AddressEntry implements Comparable<AddressEntry> {
   }
 
   /**
+   * Returns the e-mail address of the address entry
+   * 
    * @return The e-mail address of the person
    */
   public String getEmail() {
