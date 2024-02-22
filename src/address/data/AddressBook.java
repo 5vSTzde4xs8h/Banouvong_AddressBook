@@ -14,9 +14,32 @@ public class AddressBook {
   /** The address entry list */
   private final TreeSet<AddressEntry> addressEntryList;
 
-  /** Creates a new address book */
-  public AddressBook() {
+  /** The AddressBook singleton */
+  private static AddressBook addressBook = null;
+
+  /**
+   * Creates a new address book. This constructor is private-protected to enforce the singleton
+   * pattern.
+   */
+  private AddressBook() {
     addressEntryList = new TreeSet<AddressEntry>();
+  }
+
+  /**
+   * Returns the AddressBook singleton, or creates and returns a new AddressBook singleton if it
+   * hasn't been created
+   */
+  public static AddressBook getAddressBook() {
+    if (addressBook == null) {
+      addressBook = new AddressBook();
+    }
+
+    return addressBook;
+  }
+
+  /** Clears all {@link AddressEntry}s from the address entry list */
+  public void clear() {
+    addressEntryList.clear();
   }
 
   /**

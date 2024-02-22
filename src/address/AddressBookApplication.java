@@ -18,7 +18,7 @@ public class AddressBookApplication {
    */
   public static void main(String[] args) {
     Scanner inputScanner = new Scanner(System.in);
-    AddressBook addressBook = new AddressBook();
+    AddressBook addressBook = AddressBook.getAddressBook();
     char actionCharacter = 0;
 
     while (actionCharacter != 'f') {

@@ -1,6 +1,8 @@
 package address.data;
 
 import java.util.ArrayList;
+
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -12,8 +14,11 @@ import static org.junit.jupiter.api.Assertions.*;
  * @since 2024-02-13
  */
 class AddressBookTest {
-  /** Address entry for John Doe */
-  AddressEntry johnDoe =
+  /** {@link AddressBook} singleton */
+  private final AddressBook addressBook = AddressBook.getAddressBook();
+
+  /** {@link AddressEntry} for John Doe */
+  private final AddressEntry johnDoe =
       new AddressEntry(
           "John",
           "Doe",
@@ -24,8 +29,8 @@ class AddressBookTest {
           "1234567890",
           "johndoe@example.com");
 
-  /** Address entry for Jane Doe */
-  AddressEntry janeDoe =
+  /** {@link AddressEntry} for Jane Doe */
+  private final AddressEntry janeDoe =
       new AddressEntry(
           "Jane",
           "Doe",
@@ -36,8 +41,8 @@ class AddressBookTest {
           "0987654321",
           "janedoe@example.com");
 
-  /** Address entry for John Smith */
-  AddressEntry johnSmith =
+  /** {@link AddressEntry} for John Smith */
+  private final AddressEntry johnSmith =
       new AddressEntry(
           "John",
           "Smith",
@@ -48,8 +53,8 @@ class AddressBookTest {
           "2468013579",
           "johnsmith@example.com");
 
-  /** Address entry for a second John Doe */
-  AddressEntry johnDoe2 =
+  /** {@link AddressEntry} for a second John Doe */
+  private final AddressEntry johnDoe2 =
       new AddressEntry(
           "John",
           "Doe",
@@ -60,8 +65,8 @@ class AddressBookTest {
           "1357924680",
           "johndoe2@example.com");
 
-  /** Address entry for Aaron Baron */
-  AddressEntry aaronBaron =
+  /** {@link AddressEntry} for Aaron Baron */
+  private final AddressEntry aaronBaron =
       new AddressEntry(
           "Aaron",
           "Baron",
@@ -72,17 +77,30 @@ class AddressBookTest {
           "1029384756",
           "abaron@example.com");
 
+  /** Clears the address book before each test */
+  @BeforeEach
+  public void resetAddressBook() {
+    addressBook.clear();
+  }
+
+  /** Tests that only one {@link AddressBook} exists at a time */
+  @Test
+  public void testSingleton() {
+    AddressBook addressBook = AddressBook.getAddressBook();
+    AddressBook addressBook2 = AddressBook.getAddressBook();
+
+    assertEquals(addressBook, addressBook2);
+  }
+
   /** Tests that an {@link AddressEntry} can be added to the address book */
   @Test
   public void testAdd() {
-    AddressBook addressBook = new AddressBook();
     assertTrue(addressBook.add(johnDoe));
   }
 
   /** Tests that adding the same {@link AddressEntry} twice doesn't work */
   @Test
   public void testAddDuplicate() {
-    AddressBook addressBook = new AddressBook();
     addressBook.add(johnDoe);
 
     assertFalse(addressBook.add(johnDoe));
@@ -91,7 +109,6 @@ class AddressBookTest {
   /** Tests that adding two {@link AddressEntry}s with the same first name works */
   @Test
   public void testAddDuplicateFirstName() {
-    AddressBook addressBook = new AddressBook();
     addressBook.add(johnDoe);
 
     assertTrue(addressBook.add(johnSmith));
@@ -100,7 +117,6 @@ class AddressBookTest {
   /** Tests that adding two {@link AddressEntry}s with the same last name works */
   @Test
   public void testAddDuplicateLastName() {
-    AddressBook addressBook = new AddressBook();
     addressBook.add(johnDoe);
 
     assertTrue(addressBook.add(janeDoe));
@@ -112,7 +128,6 @@ class AddressBookTest {
    */
   @Test
   public void testAddDuplicateNames() {
-    AddressBook addressBook = new AddressBook();
     addressBook.add(johnDoe);
 
     assertFalse(addressBook.add(johnDoe2));
@@ -122,7 +137,6 @@ class AddressBookTest {
   @Test
   public void testReadFile() {
     String testFileName = "test/resources/addressBook.txt";
-    AddressBook addressBook = new AddressBook();
 
     AddressEntry janeSmith =
         new AddressEntry(
@@ -152,7 +166,6 @@ class AddressBookTest {
   public void testReadMalformedFile() {
     String testFile1Name = "test/resources/addressBookMalformed.txt";
     String testFile2Name = "test/resources/addressBookIncomplete.txt";
-    AddressBook addressBook = new AddressBook();
 
     ArrayList<AddressEntry> addedEntries = addressBook.readFromFile(testFile1Name);
     ArrayList<AddressEntry> addedEntries2 = addressBook.readFromFile(testFile2Name);
@@ -172,7 +185,6 @@ class AddressBookTest {
   @Test
   public void testReadEmptyFile() {
     String fileName = "test/resources/addressBookEmpty.txt";
-    AddressBook addressBook = new AddressBook();
     ArrayList<AddressEntry> addedEntries = addressBook.readFromFile(fileName);
 
     assertEquals(0, addedEntries.size());
@@ -181,7 +193,6 @@ class AddressBookTest {
   /** Tests that passing an empty filename returns an empty list */
   @Test
   public void testReadEmptyFileName() {
-    AddressBook addressBook = new AddressBook();
     ArrayList<AddressEntry> addedEntries = addressBook.readFromFile("");
 
     assertEquals(0, addedEntries.size());
@@ -191,7 +202,6 @@ class AddressBookTest {
   @Test
   public void testReadMissingFile() {
     String fileName = "test/resources/addressBookNonExistent.txt";
-    AddressBook addressBook = new AddressBook();
     ArrayList<AddressEntry> addedEntries = addressBook.readFromFile(fileName);
 
     assertEquals(0, addedEntries.size());
@@ -201,7 +211,6 @@ class AddressBookTest {
   @Test
   public void testReadDuplicateFile() {
     String fileName = "test/resources/addressBook.txt";
-    AddressBook addressBook = new AddressBook();
 
     ArrayList<AddressEntry> addedEntries = addressBook.readFromFile(fileName);
     ArrayList<AddressEntry> duplicateAddedEntries = addressBook.readFromFile(fileName);
@@ -213,7 +222,6 @@ class AddressBookTest {
   /** Tests that an {@link AddressEntry} can be removed from an address book */
   @Test
   public void testRemove() {
-    AddressBook addressBook = new AddressBook();
     addressBook.add(johnDoe);
 
     assertTrue(addressBook.remove(johnDoe));
@@ -222,7 +230,6 @@ class AddressBookTest {
   /** Tests that removing an {@link AddressEntry} twice from the same address book doesn't work */
   @Test
   public void testRemoveDuplicate() {
-    AddressBook addressBook = new AddressBook();
     addressBook.add(johnDoe);
     addressBook.remove(johnDoe);
 
@@ -232,7 +239,6 @@ class AddressBookTest {
   /** Tests that finding {@link AddressEntry}s by last name works as intended */
   @Test
   public void testFind() {
-    AddressBook addressBook = new AddressBook();
     addressBook.add(johnDoe);
     addressBook.add(janeDoe);
     addressBook.add(aaronBaron);
@@ -253,7 +259,6 @@ class AddressBookTest {
   /** Tests that finding {@link AddressEntry}s is case-insensitive */
   @Test
   public void testFindCaseInsensitive() {
-    AddressBook addressBook = new AddressBook();
     addressBook.add(johnDoe);
     addressBook.add(janeDoe);
 
@@ -271,7 +276,6 @@ class AddressBookTest {
   /** Tests that address listing works and contains the address entry information */
   @Test
   public void testListing() {
-    AddressBook addressBook = new AddressBook();
     addressBook.add(johnDoe);
     addressBook.add(janeDoe);
 
@@ -283,14 +287,12 @@ class AddressBookTest {
   /** Tests that address listing an empty address book returns an empty string */
   @Test
   public void testListingEmpty() {
-    AddressBook addressBook = new AddressBook();
     assertTrue(addressBook.list().isEmpty());
   }
 
   /** Tests that {@link AddressBook#contains} works as intended */
   @Test
   public void testContains() {
-    AddressBook addressBook = new AddressBook();
     addressBook.add(johnDoe);
 
     assertTrue(addressBook.contains(johnDoe));

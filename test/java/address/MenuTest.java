@@ -16,13 +16,16 @@ import static org.junit.jupiter.api.Assertions.*;
  * @since 2024-02-13
  */
 class MenuTest {
-  /** OutputStream for tests that check output */
-  private ByteArrayOutputStream outputStream;
+  /** {@link OutputStream} for tests that check output */
+  private final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
-  /** Scanner for tests that simulate input */
+  /** {@link Scanner} for tests that simulate input */
   private Scanner inputScanner;
 
-  /** Address entry for John Doe */
+  /** {@link AddressBook} singleton for tests that use an address book */
+  private final AddressBook addressBook = AddressBook.getAddressBook();
+
+  /** {@link AddressEntry} for John Doe */
   private final AddressEntry johnDoe =
       new AddressEntry(
           "John",
@@ -34,7 +37,7 @@ class MenuTest {
           "1234567890",
           "johndoe@example.com");
 
-  /** Address entry for Jane Doe */
+  /** {@link AddressEntry} for Jane Doe */
   private final AddressEntry janeDoe =
       new AddressEntry(
           "Jane",
@@ -46,7 +49,7 @@ class MenuTest {
           "0987654321",
           "janedoe@example.com");
 
-  /** Address entry for John Smith */
+  /** {@link AddressEntry} for John Smith */
   private final AddressEntry johnSmith =
       new AddressEntry(
           "John",
@@ -58,7 +61,7 @@ class MenuTest {
           "2468013579",
           "johnsmith@example.com");
 
-  /** Address entry for Jane Smith */
+  /** {@link AddressEntry} for Jane Smith */
   private final AddressEntry janeSmith =
       new AddressEntry(
           "Jane",
@@ -70,7 +73,7 @@ class MenuTest {
           "5849301812",
           "janesmith@example.com");
 
-  /** Address entry for Aaron Baron */
+  /** {@link AddressEntry} for Aaron Baron */
   private final AddressEntry aaronBaron =
       new AddressEntry(
           "Aaron",
@@ -82,18 +85,15 @@ class MenuTest {
           "1029384756",
           "abaron@example.com");
 
-  /** Replaces {@link System#in} with an output stream that the tests can read */
+  /** For each test, replace the output with a readable output and clear the address book */
   @BeforeEach
-  public void replaceSystemOut() {
-    outputStream = new ByteArrayOutputStream();
+  public void setup() {
     System.setOut(new PrintStream(outputStream));
+    addressBook.clear();
   }
 
   /**
-   * Replaces {@link System#in} with an input stream containing a string, thereby "simulating
-   * input". This only works for one input "session" (method call). It will not work if you try to
-   * use the same simulated input for multiple sessions, or for functions that use more than one
-   * input session.
+   * Replaces {@link System#in} with an input stream containing a string, thereby "simulating input"
    *
    * @param input The simulated input string
    */
@@ -294,8 +294,6 @@ class MenuTest {
   @Test
   public void testPromptAddEntriesFromFile() {
     simulateInput("test/resources/addressBook.txt" + System.lineSeparator());
-
-    AddressBook addressBook = new AddressBook();
     Menu.promptAddEntriesFromFile(inputScanner, addressBook);
 
     String output = outputStream.toString();
@@ -311,8 +309,6 @@ class MenuTest {
   @Test
   public void testPromptAddEntriesFromEmptyFile() {
     simulateInput("test/resources/addressBookEmpty.txt" + System.lineSeparator());
-
-    AddressBook addressBook = new AddressBook();
     Menu.promptAddEntriesFromFile(inputScanner, addressBook);
 
     String output = outputStream.toString();
@@ -340,7 +336,6 @@ class MenuTest {
             + "johndoe@example.com"
             + System.lineSeparator());
 
-    AddressBook addressBook = new AddressBook();
     Menu.promptAddEntry(inputScanner, addressBook);
 
     String output = outputStream.toString();
@@ -358,15 +353,13 @@ class MenuTest {
   /** Tests that {@link Menu#promptRemoveEntry} works as intended. */
   @Test
   public void testPromptRemoveEntry() {
-    simulateInput("Doe" + System.lineSeparator() + "1" + System.lineSeparator());
-
-    AddressBook addressBook = new AddressBook();
     addressBook.add(johnDoe);
     addressBook.add(janeDoe);
 
+    simulateInput("Doe" + System.lineSeparator() + "1" + System.lineSeparator());
     Menu.promptRemoveEntry(inputScanner, addressBook);
-    String output = outputStream.toString();
 
+    String output = outputStream.toString();
     assertTrue(output.contains("Found multiple entries"));
     assertTrue(addressBook.contains(johnDoe));
     assertFalse(addressBook.contains(janeDoe));
@@ -375,15 +368,13 @@ class MenuTest {
   /** Tests that {@link Menu#promptRemoveEntry} works as intended when no entries are found */
   @Test
   public void testPromptRemoveNoEntries() {
-    simulateInput("Abc" + System.lineSeparator());
-
-    AddressBook addressBook = new AddressBook();
     addressBook.add(johnDoe);
     addressBook.add(janeDoe);
 
+    simulateInput("Abc" + System.lineSeparator());
     Menu.promptRemoveEntry(inputScanner, addressBook);
-    String output = outputStream.toString();
 
+    String output = outputStream.toString();
     assertTrue(output.contains("No entries found"));
     assertTrue(addressBook.contains(johnDoe));
     assertTrue(addressBook.contains(janeDoe));
@@ -392,13 +383,10 @@ class MenuTest {
   /** Tests that {@link Menu#promptRemoveEntry} works as intended when one entry is found */
   @Test
   public void testPromptRemoveOneEntry() {
-    simulateInput("Doe" + System.lineSeparator());
-
-    AddressBook addressBook = new AddressBook();
     addressBook.add(johnDoe);
 
+    simulateInput("Doe" + System.lineSeparator());
     Menu.promptRemoveEntry(inputScanner, addressBook);
-    String output = outputStream.toString();
 
     assertFalse(addressBook.contains(johnDoe));
   }
@@ -406,7 +394,6 @@ class MenuTest {
   /** Tests that {@link Menu#promptFindEntries} works as intended */
   @Test
   public void testPromptFindEntries() {
-    AddressBook addressBook = new AddressBook();
     addressBook.add(johnDoe);
     addressBook.add(janeDoe);
 
@@ -421,7 +408,6 @@ class MenuTest {
   /** Tests that {@link Menu#promptFindEntries} works as intended when nothing is found */
   @Test
   public void testPromptFindNoEntries() {
-    AddressBook addressBook = new AddressBook();
     addressBook.add(johnDoe);
     addressBook.add(janeDoe);
 
