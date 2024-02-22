@@ -350,7 +350,7 @@ class MenuTest {
     assertTrue(addressBook.contains(johnDoe));
   }
 
-  /** Tests that {@link Menu#promptRemoveEntry} works as intended. */
+  /** Tests that {@link Menu#promptRemoveEntry} works as intended */
   @Test
   public void testPromptRemoveEntry() {
     addressBook.add(johnDoe);
@@ -361,6 +361,21 @@ class MenuTest {
 
     String output = outputStream.toString();
     assertTrue(output.contains("Found multiple entries"));
+    assertTrue(addressBook.contains(johnDoe));
+    assertFalse(addressBook.contains(janeDoe));
+  }
+
+  /** Tests that {@link Menu#promptRemoveEntry} works as intended when inputting a bad index */
+  @Test
+  public void testPromptRemoveEntryBadIndex() {
+    addressBook.add(johnDoe);
+    addressBook.add(janeDoe);
+
+    simulateInput("Doe" + System.lineSeparator() + "0" + System.lineSeparator() + "1" + System.lineSeparator());
+    Menu.promptRemoveEntry(inputScanner, addressBook);
+
+    String output = outputStream.toString();
+    assertTrue(output.contains("Invalid input"));
     assertTrue(addressBook.contains(johnDoe));
     assertFalse(addressBook.contains(janeDoe));
   }

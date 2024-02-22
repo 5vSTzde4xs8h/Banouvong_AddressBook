@@ -298,4 +298,15 @@ class AddressBookTest {
     assertTrue(addressBook.contains(johnDoe));
     assertFalse(addressBook.contains(janeDoe));
   }
+
+  /** Tests that {@link AddressBook#clear()} clear the address entry list */
+  @Test
+  public void testClear() {
+    addressBook.add(johnDoe);
+    addressBook.add(janeDoe);
+    addressBook.clear();
+
+    assertFalse(addressBook.contains(johnDoe));
+    assertFalse(addressBook.contains(janeDoe));
+  }
 }
