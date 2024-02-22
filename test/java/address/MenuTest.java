@@ -4,6 +4,7 @@ import address.data.AddressBook;
 import address.data.AddressEntry;
 import java.io.*;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -86,7 +87,10 @@ class MenuTest {
   }
 
   /**
-   * Replaces {@link System#in} with an input stream containing a string, thereby "simulating input"
+   * Replaces {@link System#in} with an input stream containing a string, thereby "simulating
+   * input". This only works for one input "session" (method call). It will not work if you try to
+   * use the same simulated input for multiple sessions, or for functions that use more than one
+   * input session.
    *
    * @param input The simulated input string
    */
@@ -298,8 +302,24 @@ class MenuTest {
     assertTrue(addressBook.contains(aaronBaron));
   }
 
-  /** Tests that {@link Menu#promptAddEntry} works as intended */
+  /** Tests that {@link Menu#promptAddEntriesFromFile} works as intended for an empty file */
   @Test
+  public void testPromptAddEntriesFromEmptyFile() {
+    simulateInput("test/resources/addressBookEmpty.txt" + System.lineSeparator());
+
+    AddressBook addressBook = new AddressBook();
+    Menu.promptAddEntriesFromFile(addressBook);
+
+    String output = outputStream.toString();
+    assertTrue(output.contains("No entries were added"));
+  }
+
+  /**
+   * Tests that {@link Menu#promptAddEntry} works as intended. Disabled because of the limitations
+   * of {@link MenuTest#simulateInput}.
+   */
+  @Test
+  @Disabled
   public void testPromptAddEntry() {
     simulateInput(
         "John"
@@ -316,7 +336,8 @@ class MenuTest {
             + System.lineSeparator()
             + "1234567890"
             + System.lineSeparator()
-            + "johndoe@example.com");
+            + "johndoe@example.com"
+            + System.lineSeparator());
 
     AddressBook addressBook = new AddressBook();
     Menu.promptAddEntry(addressBook);
@@ -333,10 +354,14 @@ class MenuTest {
     assertTrue(addressBook.contains(johnDoe));
   }
 
-  /** Tests that {@link Menu#promptRemoveEntry} works as intended */
+  /**
+   * Tests that {@link Menu#promptRemoveEntry} works as intended. Disabled because of the
+   * limitations of {@link MenuTest#simulateInput}.
+   */
   @Test
+  @Disabled
   public void testPromptRemoveEntry() {
-    simulateInput("doe" + System.lineSeparator() + "1" + System.lineSeparator());
+    simulateInput("Doe" + System.lineSeparator() + "1" + System.lineSeparator());
 
     AddressBook addressBook = new AddressBook();
     addressBook.add(johnDoe);
@@ -350,19 +375,63 @@ class MenuTest {
     assertFalse(addressBook.contains(janeDoe));
   }
 
-  /** Tests that {@link Menu#promptFindEntries} works as intended */
+  /** Tests that {@link Menu#promptRemoveEntry} works as intended when no entries are found */
   @Test
-  public void testPromptFindEntries() {
-    simulateInput("doe" + System.lineSeparator() + "1" + System.lineSeparator());
+  public void testPromptRemoveNoEntries() {
+    simulateInput("Abc" + System.lineSeparator());
 
     AddressBook addressBook = new AddressBook();
     addressBook.add(johnDoe);
     addressBook.add(janeDoe);
 
+    Menu.promptRemoveEntry(addressBook);
+    String output = outputStream.toString();
+
+    assertTrue(output.contains("No entries found"));
+    assertTrue(addressBook.contains(johnDoe));
+    assertTrue(addressBook.contains(janeDoe));
+  }
+
+  /** Tests that {@link Menu#promptRemoveEntry} works as intended when one entry is found */
+  @Test
+  public void testPromptRemoveOneEntry() {
+    simulateInput("Doe" + System.lineSeparator());
+
+    AddressBook addressBook = new AddressBook();
+    addressBook.add(johnDoe);
+
+    Menu.promptRemoveEntry(addressBook);
+    String output = outputStream.toString();
+
+    assertFalse(addressBook.contains(johnDoe));
+  }
+
+  /** Tests that {@link Menu#promptFindEntries} works as intended */
+  @Test
+  public void testPromptFindEntries() {
+    AddressBook addressBook = new AddressBook();
+    addressBook.add(johnDoe);
+    addressBook.add(janeDoe);
+
+    simulateInput("Doe" + System.lineSeparator());
     Menu.promptFindEntries(addressBook);
 
     String output = outputStream.toString();
     assertTrue(output.contains(johnDoe.toString()));
     assertTrue(output.contains(janeDoe.toString()));
+  }
+
+  /** Tests that {@link Menu#promptFindEntries} works as intended when nothing is found */
+  @Test
+  public void testPromptFindNoEntries() {
+    AddressBook addressBook = new AddressBook();
+    addressBook.add(johnDoe);
+    addressBook.add(janeDoe);
+
+    simulateInput("Abc" + System.lineSeparator());
+    Menu.promptFindEntries(addressBook);
+
+    String output = outputStream.toString();
+    assertTrue(output.contains("There are no matching entries"));
   }
 }
