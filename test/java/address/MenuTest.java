@@ -3,8 +3,8 @@ package address;
 import address.data.AddressBook;
 import address.data.AddressEntry;
 import java.io.*;
+import java.util.Scanner;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -16,8 +16,11 @@ import static org.junit.jupiter.api.Assertions.*;
  * @since 2024-02-13
  */
 class MenuTest {
-  /** Output stream to replace {@link System#out} */
+  /** OutputStream for tests that check output */
   private ByteArrayOutputStream outputStream;
+
+  /** Scanner for tests that simulate input */
+  private Scanner inputScanner;
 
   /** Address entry for John Doe */
   private final AddressEntry johnDoe =
@@ -97,13 +100,15 @@ class MenuTest {
   private void simulateInput(String input) {
     ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes());
     System.setIn(inputStream);
+
+    inputScanner = new Scanner(System.in);
   }
 
   /** Tests that {@link Menu#promptInput} works as intended */
   @Test
   public void testPromptInput() {
     simulateInput("This is some input" + System.lineSeparator()); // This is some input↵
-    String input = Menu.promptInput("Input");
+    String input = Menu.promptInput(inputScanner, "Input");
 
     assertEquals("This is some input", input);
     assertTrue(outputStream.toString().contains("Input: "));
@@ -116,7 +121,7 @@ class MenuTest {
         System.lineSeparator()
             + "This is some input"
             + System.lineSeparator()); // ↵This is some input↵
-    String input = Menu.promptInput("Input");
+    String input = Menu.promptInput(inputScanner, "Input");
 
     assertEquals("This is some input", input);
     assertTrue(outputStream.toString().contains("Input: "));
@@ -127,7 +132,7 @@ class MenuTest {
   @Test
   public void testPromptInteger() {
     simulateInput("12345" + System.lineSeparator()); // 12345↵
-    int input = Menu.promptInteger("Input");
+    int input = Menu.promptInteger(inputScanner, "Input");
 
     assertEquals(12345, input);
     assertTrue(outputStream.toString().contains("Input: "));
@@ -137,7 +142,7 @@ class MenuTest {
   @Test
   public void testPromptIntegerEmpty() {
     simulateInput(System.lineSeparator() + "12345" + System.lineSeparator()); // ↵12345↵
-    int input = Menu.promptInteger("Input");
+    int input = Menu.promptInteger(inputScanner, "Input");
 
     assertEquals(12345, input);
     assertTrue(outputStream.toString().contains("Input: "));
@@ -149,7 +154,7 @@ class MenuTest {
   public void testPromptIntegerNonNumeric() {
     simulateInput(
         "abcde" + System.lineSeparator() + "12345" + System.lineSeparator()); // abcde↵12345↵
-    int input = Menu.promptInteger("Input");
+    int input = Menu.promptInteger(inputScanner, "Input");
 
     assertEquals(12345, input);
     assertTrue(outputStream.toString().contains("Input: "));
@@ -160,10 +165,10 @@ class MenuTest {
   @Test
   public void testPromptFirstName() {
     simulateInput("John" + System.lineSeparator()); // John↵
-    String firstNameJohn = Menu.prompt_FirstName();
+    String firstNameJohn = Menu.prompt_FirstName(inputScanner);
 
     simulateInput(System.lineSeparator() + "Jane" + System.lineSeparator()); // ↵Jane↵
-    String firstNameJane = Menu.prompt_FirstName();
+    String firstNameJane = Menu.prompt_FirstName(inputScanner);
 
     assertEquals("John", firstNameJohn);
     assertEquals("Jane", firstNameJane);
@@ -175,10 +180,10 @@ class MenuTest {
   @Test
   public void testPromptLastName() {
     simulateInput("Doe" + System.lineSeparator()); // Doe↵
-    String lastNameDoe = Menu.prompt_LastName();
+    String lastNameDoe = Menu.prompt_LastName(inputScanner);
 
     simulateInput(System.lineSeparator() + "Smith" + System.lineSeparator()); // ↵Smith↵
-    String lastNameSmith = Menu.prompt_LastName();
+    String lastNameSmith = Menu.prompt_LastName(inputScanner);
 
     assertEquals("Doe", lastNameDoe);
     assertEquals("Smith", lastNameSmith);
@@ -190,10 +195,10 @@ class MenuTest {
   @Test
   public void testPromptStreet() {
     simulateInput("Mainstreet" + System.lineSeparator()); // Mainstreet↵
-    String streetMainstreet = Menu.prompt_Street();
+    String streetMainstreet = Menu.prompt_Street(inputScanner);
 
     simulateInput(System.lineSeparator() + "Sidestreet" + System.lineSeparator()); // ↵Sidestreet↵
-    String streetSidestreet = Menu.prompt_Street();
+    String streetSidestreet = Menu.prompt_Street(inputScanner);
 
     assertEquals("Mainstreet", streetMainstreet);
     assertEquals("Sidestreet", streetSidestreet);
@@ -205,10 +210,10 @@ class MenuTest {
   @Test
   public void testPromptCity() {
     simulateInput("Maintown" + System.lineSeparator()); // Maintown↵
-    String cityMaintown = Menu.prompt_City();
+    String cityMaintown = Menu.prompt_City(inputScanner);
 
     simulateInput(System.lineSeparator() + "Sidetown" + System.lineSeparator()); // ↵Sidetown↵
-    String citySidetown = Menu.prompt_City();
+    String citySidetown = Menu.prompt_City(inputScanner);
 
     assertEquals("Maintown", cityMaintown);
     assertEquals("Sidetown", citySidetown);
@@ -220,10 +225,10 @@ class MenuTest {
   @Test
   public void testPromptState() {
     simulateInput("Mainstate" + System.lineSeparator()); // Mainstate↵
-    String stateMainstate = Menu.prompt_State();
+    String stateMainstate = Menu.prompt_State(inputScanner);
 
     simulateInput(System.lineSeparator() + "Sidestate" + System.lineSeparator()); // ↵Sidestate↵
-    String stateSidestate = Menu.prompt_State();
+    String stateSidestate = Menu.prompt_State(inputScanner);
 
     assertEquals("Mainstate", stateMainstate);
     assertEquals("Sidestate", stateSidestate);
@@ -235,14 +240,14 @@ class MenuTest {
   @Test
   public void testPromptZip() {
     simulateInput("12345" + System.lineSeparator()); // 12345↵
-    int zip12345 = Menu.prompt_Zip();
+    int zip12345 = Menu.prompt_Zip(inputScanner);
 
     simulateInput(System.lineSeparator() + "67890" + System.lineSeparator()); // ↵67890↵
-    int zip67890 = Menu.prompt_Zip();
+    int zip67890 = Menu.prompt_Zip(inputScanner);
 
     simulateInput(
         "abcde" + System.lineSeparator() + "10293" + System.lineSeparator()); // abcde↵10293↵
-    int zip10293 = Menu.prompt_Zip();
+    int zip10293 = Menu.prompt_Zip(inputScanner);
 
     assertEquals(12345, zip12345);
     assertEquals(67890, zip67890);
@@ -256,10 +261,10 @@ class MenuTest {
   @Test
   public void testPromptPhone() {
     simulateInput("1234567890" + System.lineSeparator()); // 1234567890↵
-    String phone1234567890 = Menu.prompt_Phone();
+    String phone1234567890 = Menu.prompt_Phone(inputScanner);
 
     simulateInput(System.lineSeparator() + "0987654321" + System.lineSeparator()); // ↵0987654321↵
-    String phone0987654321 = Menu.prompt_State();
+    String phone0987654321 = Menu.prompt_State(inputScanner);
 
     assertEquals("1234567890", phone1234567890);
     assertEquals("0987654321", phone0987654321);
@@ -271,13 +276,13 @@ class MenuTest {
   @Test
   public void testPromptEmail() {
     simulateInput("johndoe@example.com" + System.lineSeparator()); // johndoe@example.com↵
-    String emailJohnDoe = Menu.prompt_Email();
+    String emailJohnDoe = Menu.prompt_Email(inputScanner);
 
     simulateInput(
         System.lineSeparator()
             + "janesmith@example.com"
             + System.lineSeparator()); // ↵janesmith@example.com↵
-    String emailJaneSmith = Menu.prompt_Email();
+    String emailJaneSmith = Menu.prompt_Email(inputScanner);
 
     assertEquals("johndoe@example.com", emailJohnDoe);
     assertEquals("janesmith@example.com", emailJaneSmith);
@@ -291,7 +296,7 @@ class MenuTest {
     simulateInput("test/resources/addressBook.txt" + System.lineSeparator());
 
     AddressBook addressBook = new AddressBook();
-    Menu.promptAddEntriesFromFile(addressBook);
+    Menu.promptAddEntriesFromFile(inputScanner, addressBook);
 
     String output = outputStream.toString();
     assertTrue(output.contains("Added 5 entries"));
@@ -308,18 +313,14 @@ class MenuTest {
     simulateInput("test/resources/addressBookEmpty.txt" + System.lineSeparator());
 
     AddressBook addressBook = new AddressBook();
-    Menu.promptAddEntriesFromFile(addressBook);
+    Menu.promptAddEntriesFromFile(inputScanner, addressBook);
 
     String output = outputStream.toString();
     assertTrue(output.contains("No entries were added"));
   }
 
-  /**
-   * Tests that {@link Menu#promptAddEntry} works as intended. Disabled because of the limitations
-   * of {@link MenuTest#simulateInput}.
-   */
+  /** Tests that {@link Menu#promptAddEntry} works as intended */
   @Test
-  @Disabled
   public void testPromptAddEntry() {
     simulateInput(
         "John"
@@ -340,7 +341,7 @@ class MenuTest {
             + System.lineSeparator());
 
     AddressBook addressBook = new AddressBook();
-    Menu.promptAddEntry(addressBook);
+    Menu.promptAddEntry(inputScanner, addressBook);
 
     String output = outputStream.toString();
     assertTrue(output.contains("First name: "));
@@ -349,17 +350,13 @@ class MenuTest {
     assertTrue(output.contains("City: "));
     assertTrue(output.contains("State: "));
     assertTrue(output.contains("ZIP code: "));
-    assertTrue(output.contains("Phone: "));
+    assertTrue(output.contains("Phone number: "));
     assertTrue(output.contains("Email: "));
     assertTrue(addressBook.contains(johnDoe));
   }
 
-  /**
-   * Tests that {@link Menu#promptRemoveEntry} works as intended. Disabled because of the
-   * limitations of {@link MenuTest#simulateInput}.
-   */
+  /** Tests that {@link Menu#promptRemoveEntry} works as intended. */
   @Test
-  @Disabled
   public void testPromptRemoveEntry() {
     simulateInput("Doe" + System.lineSeparator() + "1" + System.lineSeparator());
 
@@ -367,10 +364,10 @@ class MenuTest {
     addressBook.add(johnDoe);
     addressBook.add(janeDoe);
 
-    Menu.promptRemoveEntry(addressBook);
+    Menu.promptRemoveEntry(inputScanner, addressBook);
     String output = outputStream.toString();
 
-    assertTrue(output.contains("Found 2 entries"));
+    assertTrue(output.contains("Found multiple entries"));
     assertTrue(addressBook.contains(johnDoe));
     assertFalse(addressBook.contains(janeDoe));
   }
@@ -384,7 +381,7 @@ class MenuTest {
     addressBook.add(johnDoe);
     addressBook.add(janeDoe);
 
-    Menu.promptRemoveEntry(addressBook);
+    Menu.promptRemoveEntry(inputScanner, addressBook);
     String output = outputStream.toString();
 
     assertTrue(output.contains("No entries found"));
@@ -400,7 +397,7 @@ class MenuTest {
     AddressBook addressBook = new AddressBook();
     addressBook.add(johnDoe);
 
-    Menu.promptRemoveEntry(addressBook);
+    Menu.promptRemoveEntry(inputScanner, addressBook);
     String output = outputStream.toString();
 
     assertFalse(addressBook.contains(johnDoe));
@@ -414,7 +411,7 @@ class MenuTest {
     addressBook.add(janeDoe);
 
     simulateInput("Doe" + System.lineSeparator());
-    Menu.promptFindEntries(addressBook);
+    Menu.promptFindEntries(inputScanner, addressBook);
 
     String output = outputStream.toString();
     assertTrue(output.contains(johnDoe.toString()));
@@ -429,7 +426,7 @@ class MenuTest {
     addressBook.add(janeDoe);
 
     simulateInput("Abc" + System.lineSeparator());
-    Menu.promptFindEntries(addressBook);
+    Menu.promptFindEntries(inputScanner, addressBook);
 
     String output = outputStream.toString();
     assertTrue(output.contains("There are no matching entries"));
