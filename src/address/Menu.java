@@ -252,7 +252,7 @@ public class Menu {
           entryNumber++;
         }
 
-        int indexPlusOne = Menu.promptInteger(inputScanner, "Please select an entry");
+        int indexPlusOne = Menu.promptInteger(inputScanner, "Please select an entry to remove");
 
         while ((indexPlusOne < 1) || (indexPlusOne > matchingEntries.size())) {
           System.out.println("Invalid input, please try again!");
