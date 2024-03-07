@@ -1,0 +1,3 @@
+os: linux
+language: java
+jdk: openjdk21
