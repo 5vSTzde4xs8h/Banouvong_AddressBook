@@ -136,7 +136,7 @@ class AddressBookTest {
   /** Tests that address entries can be read from a file */
   @Test
   public void testReadFile() {
-    String testFileName = "test/resources/addressBook.txt";
+    String testFileName = "src/test/resources/addressBook.txt";
 
     AddressEntry janeSmith =
         new AddressEntry(
@@ -164,8 +164,8 @@ class AddressBookTest {
    */
   @Test
   public void testReadMalformedFile() {
-    String testFile1Name = "test/resources/addressBookMalformed.txt";
-    String testFile2Name = "test/resources/addressBookIncomplete.txt";
+    String testFile1Name = "src/test/resources/addressBookMalformed.txt";
+    String testFile2Name = "src/test/resources/addressBookIncomplete.txt";
 
     ArrayList<AddressEntry> addedEntries = addressBook.readFromFile(testFile1Name);
     ArrayList<AddressEntry> addedEntries2 = addressBook.readFromFile(testFile2Name);
@@ -184,7 +184,7 @@ class AddressBookTest {
    */
   @Test
   public void testReadEmptyFile() {
-    String fileName = "test/resources/addressBookEmpty.txt";
+    String fileName = "src/test/resources/addressBookEmpty.txt";
     ArrayList<AddressEntry> addedEntries = addressBook.readFromFile(fileName);
 
     assertEquals(0, addedEntries.size());
@@ -201,7 +201,7 @@ class AddressBookTest {
   /** Tests that reading a non-existent file returns an empty list */
   @Test
   public void testReadMissingFile() {
-    String fileName = "test/resources/addressBookNonExistent.txt";
+    String fileName = "src/test/resources/addressBookNonExistent.txt";
     ArrayList<AddressEntry> addedEntries = addressBook.readFromFile(fileName);
 
     assertEquals(0, addedEntries.size());
@@ -210,7 +210,7 @@ class AddressBookTest {
   /** Tests that reading duplicate entries doesn't add new ones */
   @Test
   public void testReadDuplicateFile() {
-    String fileName = "test/resources/addressBook.txt";
+    String fileName = "src/test/resources/addressBook.txt";
 
     ArrayList<AddressEntry> addedEntries = addressBook.readFromFile(fileName);
     ArrayList<AddressEntry> duplicateAddedEntries = addressBook.readFromFile(fileName);

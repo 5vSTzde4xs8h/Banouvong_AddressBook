@@ -293,7 +293,7 @@ class MenuTest {
   /** Tests that {@link Menu#promptAddEntriesFromFile} works as intended */
   @Test
   public void testPromptAddEntriesFromFile() {
-    simulateInput("test/resources/addressBook.txt" + System.lineSeparator());
+    simulateInput("src/test/resources/addressBook.txt" + System.lineSeparator());
     Menu.promptAddEntriesFromFile(inputScanner, addressBook);
 
     String output = outputStream.toString();
